@@ -1,0 +1,48 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "disabled_providers": [],
+  "provider": {
+    "bearllm": {
+      "name": "BearLLM",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "{{LLM_BASE_URL}}"
+      },
+      "models": {
+        "Gemma": {
+          "name": "Gemma",
+          // Tell OpenCode how big Gemma's window really is so it compacts the
+          // conversation BEFORE LM Studio silently truncates it. Without this,
+          // OpenCode didn't know the limit, the session hit ~32k tokens, the
+          // model lost track of what it had done, and rewrote the same file 75+ times.
+          // Keep "context" equal to the Context Length set for Gemma in LM Studio.
+          "limit": {
+            "context": 32768,
+            "output": 4096
+          }
+        }
+      }
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "permission": {
+    // OpenCode's built-in loop detector (same tool + same input repeated).
+    // "deny" rejects the repeat outright, so an accidental "Always allow" can't
+    // let a loop run unattended. Change back to "ask" if you prefer a prompt.
+    "doom_loop": "deny"
+  },
+  "agent": {
+    "build": {
+      // Hard ceiling on tool-call iterations per turn; after this the model
+      // must stop and reply in text.
+      "steps": 40
+    }
+  },
+  "instructions": [
+    "~/.config/opencode/delegation.md",
+    "~/.config/opencode/context/*.md"
+  ]
+}
