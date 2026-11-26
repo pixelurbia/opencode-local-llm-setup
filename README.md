@@ -69,3 +69,7 @@ Delete the files listed above from `~/.config/opencode`, and the watchdog autost
 - macOS: `launchctl bootout gui/$(id -u)/opencode.loop-watchdog`, then delete `~/Library/LaunchAgents/opencode.loop-watchdog.plist`
 - Linux: `systemctl --user disable --now opencode-loop-watchdog`
 - Windows: `schtasks /Delete /TN OpenCodeLoopWatchdog /F`
+
+## License
+
+[MIT](LICENSE)
